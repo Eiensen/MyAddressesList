@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MyList.Server.Data;
 using MyList.Shared;
 using System;
 using System.Collections.Generic;
@@ -12,16 +14,18 @@ namespace MyList.Server.Controllers.Addresses
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private List<Address> addresses = new List<Address>()
-            {
-                new Address(){Id = 1, DateMeasurment = DateTime.Now.Date, DateMontage = DateTime.Now.Date, Name = "str. Nova 99", Sum = 11500, WorkersName = Worker.Александр},
-                new Address(){Id = 2, DateMeasurment = DateTime.Now.Date, DateMontage = DateTime.Now.Date, Name = "str. Dobor 1", Sum = 9300, WorkersName = Worker.Броня},
-                new Address(){Id = 3, DateMeasurment = DateTime.Now.Date, DateMontage = DateTime.Now.Date, Name = "str. Znaniya 12", Sum = 8200, WorkersName = Worker.Дима}
-            };
+        private readonly DataContext db;
+
+        public AddressController(DataContext db)
+        {
+            this.db = db;
+        }
         
         [HttpGet]
         public async Task<ActionResult<List<Address>>> GetAddresses()
         {
+            var addresses = await db.Addresses.ToListAsync();
+
             return Ok(addresses);
         }
     }
