@@ -20,7 +20,7 @@ namespace MyList.Server.Controllers.Addresses
             };
         
         [HttpGet]
-        public async Task<IActionResult> GetAddresses()
+        public async Task<ActionResult<List<Address>>> GetAddresses()
         {
             return Ok(addresses);
         }
