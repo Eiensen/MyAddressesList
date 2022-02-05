@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyList.Server.Data;
+using MyList.Server.Services.Addresses;
 using System.Linq;
 
 namespace MyList.Server
@@ -31,7 +32,7 @@ namespace MyList.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-
+            services.AddScoped<IAddressService, AddressService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

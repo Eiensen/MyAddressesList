@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyList.Server.Data;
+using MyList.Server.Services.Addresses;
 using MyList.Shared;
 using System;
 using System.Collections.Generic;
@@ -14,19 +15,19 @@ namespace MyList.Server.Controllers.Addresses
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private readonly DataContext db;
+        private readonly IAddressService addressService;
 
-        public AddressController(DataContext db)
+        public AddressController(IAddressService addressService)
         {
-            this.db = db;
+            this.addressService = addressService;
         }
-        
-        [HttpGet]
-        public async Task<ActionResult<List<Address>>> GetAddresses()
-        {
-            var addresses = await db.Addresses.ToListAsync();
 
-            return Ok(addresses);
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<Address>>>> GetAddresses()
+        {
+            var result = await addressService.GetAddressesAsync();
+
+            return Ok(result);
         }
     }
 }
