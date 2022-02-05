@@ -1,43 +1,46 @@
 ﻿@page "/address"
 
-@inject HttpClient Http
+@inject IAddressService AddressService
 
 <h3>Мои адреса</h3>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Дата Замера</th>
-            <th>Дата Монтажа</th>
-            <th>Адрес</th>
-            <th>Сумма Заказа</th>
-            <th>Бригада</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        @foreach (var addres in addresses)
-        {
+@if (AddressService.Addresses == null || AddressService.Addresses.Count == 0)
+{
+    <span>Loading ...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@addres.DateMeasurment</td>
-                <td>@addres.DateMontage</td>
-                <td>@addres.Name</td>
-                <td>@addres.Sum</td>
-                <td>@addres.WorkersName</td>
-                
+                <th>Дата Замера</th>
+                <th>Дата Монтажа</th>
+                <th>Адрес</th>
+                <th>Сумма Заказа</th>
+                <th>Бригада</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+
+            @foreach (var addres in AddressService.Addresses)
+            {
+                <tr>
+                    <td>@addres.DateMeasurment</td>
+                    <td>@addres.DateMontage</td>
+                    <td>@addres.Name</td>
+                    <td>@addres.Sum</td>
+                    <td>@addres.WorkersName</td>
+
+                </tr>
+            }
         </tbody>
-</table>
+    </table>
+}
 
 
 @code {
-    private List<Address> addresses = new List<Address>();
-
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Address>>("api/address");
-
-        if (result != null) addresses = result;
+        await AddressService.GetAddresses();
     }
 }
