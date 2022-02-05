@@ -1,5 +1,6 @@
 ﻿@page "/address"
 
+@inject NavigationManager NavigationManager
 @inject IAddressService AddressService
 
 <h3>Мои адреса</h3>
@@ -10,31 +11,39 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" style="font-size:x-small;">
         <thead>
             <tr>
-                <th>Дата Замера</th>
-                <th>Дата Монтажа</th>
+                <th>Замер</th>
+                <th>Монтаж</th>
                 <th>Адрес</th>
-                <th>Сумма Заказа</th>
+                <th>Сумма</th>
                 <th>Бригада</th>
+                <th>Редакт.</th>
+                <th>Удалить</th>
             </tr>
         </thead>
         <tbody>
 
             @foreach (var addres in AddressService.Addresses)
             {
-                <tr>
-                    <td>@addres.DateMeasurment</td>
-                    <td>@addres.DateMontage</td>
-                    <td>@addres.Name</td>
-                    <td>@addres.Sum</td>
-                    <td>@addres.WorkersName</td>
-
-                </tr>
+            <tr>
+                <td class="col-1">@addres.DateMeasurment.ToString("dd/MM")</td>
+                <td class="col-1">@addres.DateMontage.ToString("dd/MM")</td>
+                <td class="col-5"><b>@addres.Name</b></td>
+                <td class="col-1">@addres.Sum</td>
+                <td class="col-2">@addres.WorkersName</td>
+                <td class="col-1">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </td>
+                <td class="col-1">
+                    <button type="button" class="btn btn-primary">Delete</button>
+                </td>
+            </tr>
             }
-        </tbody>
+        </tbody>        
     </table>
+    <button type="button" class="btn btn-primary form-control" @onclick="@(()=>AddNewAddres())"><b>+</b></button>
 }
 
 
@@ -43,4 +52,9 @@ else
     {
         await AddressService.GetAddresses();
     }
+
+    public void AddNewAddres()
+    {
+        NavigationManager.NavigateTo("/addaddress");
+        }
 }

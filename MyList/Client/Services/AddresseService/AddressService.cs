@@ -23,8 +23,26 @@ namespace MyList.Client.Services.AddresseService
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>("api/address");
 
-            if (result != null && result.Data != null) 
+            if (result != null && result.Data != null)
                 Addresses = result.Data;
         }
+
+        public async Task AddAddress(Address address)
+        {
+            var request = new ServiceResponse<Address>
+            {
+                Data = address
+            };
+
+            var result = await http.PostAsJsonAsync("api/address", request);
+
+            if (result != null && result.IsSuccessStatusCode)
+                Addresses.Add(address);
+        }
+
+        //public async Task DeleteAddress(int addressId)
+        //{
+        //    var addressToDelete = await 
+        //}
     }
 }

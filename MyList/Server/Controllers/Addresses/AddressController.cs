@@ -29,5 +29,13 @@ namespace MyList.Server.Controllers.Addresses
 
             return Ok(result);
         }
+
+        [HttpPost]
+        public ActionResult AddAddress (ServiceResponse<Address> address)
+        {
+            addressService.AddAddress(address);
+
+            return Ok(address.Data);
+        }
     }
 }
