@@ -26,12 +26,5 @@ namespace MyList.Server.Services.Addresses
 
             return response;
         }
-
-        public void AddAddress(ServiceResponse<Address> address)
-        {
-            db.Addresses.Add(address.Data);
-
-            db.SaveChanges();
-        }
     }
 }
