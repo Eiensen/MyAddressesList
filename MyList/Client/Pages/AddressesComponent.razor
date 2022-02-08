@@ -2,6 +2,7 @@
 
 @inject NavigationManager NavigationManager
 @inject IAddressService AddressService
+@implements IDisposable
 
 <h3>Мои адреса</h3>
 
@@ -11,7 +12,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" style="font-size:small">
         <thead>
             <tr>
                 <th>Замер</th>
@@ -47,6 +48,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         await AddressService.GetAddresses();
+
+        StateHasChanged();
     }
 
     private void DeleteAddress(int id)
@@ -59,5 +62,12 @@ else
     private void AddNewAddress()
     {
         NavigationManager.NavigateTo("/editaddress");
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        
     }
 }

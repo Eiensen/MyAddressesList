@@ -23,19 +23,16 @@
             <input id="montageDate" type="date" class="form-control" @bind-value="montageDate" />
         </div>
     </div>
-
     <div class="form-group">
         <label for="worker">Бригада</label>
         <select id="worker" @bind="NewAddress.WorkersName" class="form-control">
-            <option selected></option>
+            <option selected>выберите бригаду монтажников</option>
             @foreach (var worker in workers.Workers)
             {
-                <option value="@worker">@worker.ToString()</option>
+                <option value="@worker">@worker</option>
             }
         </select>
     </div>
-
-
     <div class="form-group">
         <label for="sum">Сумма Заказа</label>
         <InputNumber id="sum" @bind-Value="NewAddress.Sum" class="form-control"></InputNumber>
@@ -47,11 +44,24 @@
 </EditForm>
 
 @code {
-    public Address NewAddress { get; set; } = new Address();
+    private Address NewAddress;
 
-    private Worker workers = new Worker();
+    private Worker workers;
     private DateTime startDate;
     private DateTime montageDate;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        NewAddress = new Address();
+
+        workers = new Worker();
+
+        startDate = DateTime.Now;
+
+        montageDate = DateTime.Now;
+    }
 
     private void HandleSubmit()
     {

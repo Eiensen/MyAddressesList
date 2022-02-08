@@ -24,7 +24,9 @@ namespace MyList.Client.Services.AddresseService
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>("api/address");
 
             if (result != null && result.Data != null)
+            {
                 Addresses = result.Data;
+            }       
         }
 
         public async Task AddNewAddress(Address address)
@@ -40,7 +42,7 @@ namespace MyList.Client.Services.AddresseService
         {
             var result = await http.DeleteAsync($"api/address/{id}");
 
-            Addresses = await result.Content.ReadFromJsonAsync<List<Address>>();            
+            Addresses = await result.Content.ReadFromJsonAsync<List<Address>>();
         }
     }
 }

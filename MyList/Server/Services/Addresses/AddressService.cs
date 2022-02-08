@@ -48,23 +48,23 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
-        public async Task<ServiceResponse<Address>> DeleteAddress(int id)
+        public async Task<ServiceResponse<List<Address>>> DeleteAddress(int id)
         {
-            var response = new ServiceResponse<Address>
-            {
-                Data = await db.Addresses.FirstOrDefaultAsync(a => a.Id == id)
-            };
+            var result = await db.Addresses.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (response.Data != null)
+            if (result != null)
             {
-                db.Addresses.Remove(response.Data);
+                db.Addresses.Remove(result);
 
                 db.SaveChanges();
-
-                return response;
             }
 
-            return null;
+            var response = new ServiceResponse<List<Address>>
+            {
+                Data = await db.Addresses.AsNoTracking().ToListAsync()
+            };
+
+            return response;
         }
     }
 }
