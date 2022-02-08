@@ -47,9 +47,9 @@
 </EditForm>
 
 @code {
-    public Address NewAddress { get; set; }
+    public Address NewAddress { get; set; } = new Address();
 
-    private Worker workers;
+    private Worker workers = new Worker();
     private DateTime startDate;
     private DateTime montageDate;
 
