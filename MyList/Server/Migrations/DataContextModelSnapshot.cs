@@ -38,8 +38,8 @@ namespace MyList.Server.Migrations
                     b.Property<int>("Sum")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkersName")
-                        .HasColumnType("int");
+                    b.Property<string>("WorkersName")
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -53,7 +53,7 @@ namespace MyList.Server.Migrations
                             DateMontage = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Name = "str. Nova 99",
                             Sum = 11500,
-                            WorkersName = 0
+                            WorkersName = ""
                         },
                         new
                         {
@@ -62,7 +62,7 @@ namespace MyList.Server.Migrations
                             DateMontage = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Name = "str. Dobor 1",
                             Sum = 9300,
-                            WorkersName = 7
+                            WorkersName = ""
                         },
                         new
                         {
@@ -71,7 +71,7 @@ namespace MyList.Server.Migrations
                             DateMontage = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Name = "str. Znaniya 12",
                             Sum = 8200,
-                            WorkersName = 6
+                            WorkersName = ""
                         });
                 });
 #pragma warning restore 612, 618

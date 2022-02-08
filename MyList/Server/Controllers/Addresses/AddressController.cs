@@ -27,6 +27,37 @@ namespace MyList.Server.Controllers.Addresses
         {
             var result = await addressService.GetAddressesAsync();
 
+            if (result == null)
+            {
+                return BadRequest("Something go wrong.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<List<Address>>>> AddNewAddress(Address address)
+        {
+            var result = await addressService.AddNewAddress(address);
+
+            if (result == null)
+            {
+                return BadRequest("Something go wrong.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAddress(int id)
+        {
+            var result = await addressService.DeleteAddress(id);
+
+            if (result == null)
+            {
+                return BadRequest("Not found address to delete.");
+            }
+
             return Ok(result);
         }
     }

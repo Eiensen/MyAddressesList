@@ -15,6 +15,6 @@ namespace MyList.Shared
 
         public int Sum { get; set; }
 
-        public Worker WorkersName { get; set; }
+        public string WorkersName { get; set; }
     }
 }

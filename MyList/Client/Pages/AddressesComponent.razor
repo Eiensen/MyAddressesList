@@ -1,5 +1,6 @@
-﻿@page "/address"
+﻿@page "/addresses"
 
+@inject NavigationManager NavigationManager
 @inject IAddressService AddressService
 
 <h3>Мои адреса</h3>
@@ -13,11 +14,12 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Дата Замера</th>
-                <th>Дата Монтажа</th>
+                <th>Замер</th>
+                <th>Монтаж</th>
                 <th>Адрес</th>
-                <th>Сумма Заказа</th>
+                <th>Сумма</th>
                 <th>Бригада</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -25,16 +27,19 @@ else
             @foreach (var addres in AddressService.Addresses)
             {
                 <tr>
-                    <td>@addres.DateMeasurment</td>
-                    <td>@addres.DateMontage</td>
-                    <td>@addres.Name</td>
+                    <td>@addres.DateMeasurment.ToString("dd/MM")</td>
+                    <td>@addres.DateMontage.ToString("dd/MM")</td>
+                    <td><b>@addres.Name</b></td>
                     <td>@addres.Sum</td>
                     <td>@addres.WorkersName</td>
-
+                    <td>
+                        <button type="button" class="btn btn-primary" @onclick="(()=>DeleteAddress(addres.Id))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
+    <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddress"><b>+</b></button>
 }
 
 
@@ -42,5 +47,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         await AddressService.GetAddresses();
+    }
+
+    private void DeleteAddress(int id)
+    {
+        AddressService.DeleteAddress(id);
+
+        StateHasChanged();
+    }
+
+    private void AddNewAddress()
+    {
+        NavigationManager.NavigateTo("/editaddress");
     }
 }

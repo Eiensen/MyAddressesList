@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyList.Server", "MyList\Server\MyList.Server.csproj", "{4451EE69-9C30-4738-91F1-F31FC96D6E8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyList.Server", "MyList\Server\MyList.Server.csproj", "{4451EE69-9C30-4738-91F1-F31FC96D6E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyList.Client", "MyList\Client\MyList.Client.csproj", "{AC88A0EF-0465-4B1F-9817-B9AC4A926AF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyList.Client", "MyList\Client\MyList.Client.csproj", "{AC88A0EF-0465-4B1F-9817-B9AC4A926AF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyList.Shared", "MyList\Shared\MyList.Shared.csproj", "{97BBBA33-B276-4E21-AF29-5133C60D3921}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyList.Shared", "MyList\Shared\MyList.Shared.csproj", "{97BBBA33-B276-4E21-AF29-5133C60D3921}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
