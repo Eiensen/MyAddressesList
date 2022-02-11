@@ -8,8 +8,8 @@ namespace MyList.Server.Services.Addresses
     {
         Task<ServiceResponse<Address>> AddNewAddress(Address address);
 
-        Task<ServiceResponse<List<Address>>> DeleteAddress(int id);
+        Task<ServiceResponse<IEnumerable<Address>>> DeleteAddress(int id);
 
-        Task<ServiceResponse<List<Address>>> GetAddressesAsync();
+        ServiceResponse<IEnumerable<Address>> GetAddressesAsync();
     }
 }

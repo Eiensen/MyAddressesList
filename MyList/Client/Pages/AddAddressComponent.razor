@@ -1,51 +1,81 @@
 ﻿@page "/addaddress"
 
+<h3>Новый адрес</h3>
 
 @inject NavigationManager NavigationManager
 @inject IAddressService AddressService
 
-<h3>Add Address</h3>
+<EditForm Model="NewAddress" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
 
-
-@if (address != null)
-{
-    <EditForm Model="address" OnValidSubmit="OnValidSubmit">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
-
-        <div class="form-group">
-            <label for="name">Name</label>
-            <InputText id="name" @bind-Value="address.Name" class="form-control"></InputText>
+    <div class="form-group">
+        <label for="name">Адрес</label>
+        <InputText id="name" @bind-Value="NewAddress.Name" class="form-control"></InputText>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="startdate">Дата Замера: </label>
+            <input id="startdate" type="date" class="form-control" @bind-value="startDate" />
         </div>
+        <div class="col">
+            <label for="montageDate">Дата Монтажа: </label>
+            <input id="montageDate" type="date" class="form-control" @bind-value="montageDate" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="worker">Бригада</label>
+        <select id="worker" @bind="NewAddress.WorkersName" class="form-control">
+            <option selected>выберите бригаду монтажников</option>
+            @foreach (var worker in workers.Workers)
+            {
+                <option value="@worker">@worker</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sum">Сумма Заказа</label>
+        <InputNumber id="sum" @bind-Value="NewAddress.Sum" class="form-control"></InputNumber>
+    </div>
 
-       
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
 
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-    </EditForm>
-}
-
-
+</EditForm>
 
 @code {
-    private Address address;
+    private Address NewAddress;
+
+    private Worker workers;
+    private DateTime startDate;
+    private DateTime montageDate;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        address = new Address();
+        NewAddress = new Address();
+
+        workers = new Worker();
+
+        startDate = DateTime.Now;
+
+        montageDate = DateTime.Now;
     }
 
-    private void OnValidSubmit()
+    private async Task HandleSubmit()
     {
-        //AddressService.AddAddress(address);
+        NewAddress.DateMeasurment = startDate;
 
-        NavigationManager.NavigateTo("/address");
+        NewAddress.DateMontage = montageDate;
+
+        await AddressService.AddNewAddress(NewAddress);
+
+        NavigationManager.NavigateTo("/addresses");
     }
 
     private void OnCancel()
     {
-        NavigationManager.NavigateTo("/address");
+        NavigationManager.NavigateTo("/addresses");
     }
 }

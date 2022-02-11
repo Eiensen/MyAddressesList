@@ -23,9 +23,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Address>>>> GetAddresses()
+        public ActionResult<ServiceResponse<IEnumerable<Address>>> GetAddresses()
         {
-            var result = await addressService.GetAddressesAsync();
+            var result = addressService.GetAddressesAsync();
 
             if (result == null)
             {
@@ -36,7 +36,7 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<Address>>>> AddNewAddress(Address address)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> AddNewAddress(Address address)
         {
             var result = await addressService.AddNewAddress(address);
 
@@ -49,16 +49,14 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(int id)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> DeleteAddress(int id)
         {
-            var result = await addressService.DeleteAddress(id);
+            var response = await addressService.DeleteAddress(id);
 
-            if (result == null)
-            {
-                return BadRequest("Not found address to delete.");
-            }
-
-            return Ok(result);
+            if (response != null)
+                return Ok(response);
+            else
+                return BadRequest("Id is not exist");
         }
     }
 }

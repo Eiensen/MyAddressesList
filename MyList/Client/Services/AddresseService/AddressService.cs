@@ -19,30 +19,34 @@ namespace MyList.Client.Services.AddresseService
 
         public List<Address> Addresses { get; set; } = new List<Address>();
 
-        public async Task GetAddresses()
+        public async Task<List<Address>> GetAddresses()
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>("api/address");
 
             if (result != null && result.Data != null)
             {
                 Addresses = result.Data;
-            }       
+            }
+
+            return null;
         }
 
         public async Task AddNewAddress(Address address)
         {
-            var result = await http.PostAsJsonAsync("api/address", address);
+            var request = await http.PostAsJsonAsync("api/address", address);
 
-            var addresses = await result.Content.ReadFromJsonAsync<List<Address>>();
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<Address>>();
 
-            Addresses = addresses;
+            Addresses.Add(result.Data);
         }
 
         public async Task DeleteAddress(int id)
         {
-            var result = await http.DeleteAsync($"api/address/{id}");
+            var request = await http.DeleteAsync($"api/address/{id}");
 
-            Addresses = await result.Content.ReadFromJsonAsync<List<Address>>();
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<List<Address>>>();
+
+            Addresses = result.Data;
         }
     }
 }

@@ -17,11 +17,11 @@ namespace MyList.Server.Services.Addresses
             this.db = db;
         }
 
-        public async Task<ServiceResponse<List<Address>>> GetAddressesAsync()
+        public ServiceResponse<IEnumerable<Address>> GetAddressesAsync()
         {
-            var addresses = await db.Addresses.AsNoTracking().ToListAsync();
+            var addresses = db.Addresses.ToList();
 
-            var response = new ServiceResponse<List<Address>>()
+            var response = new ServiceResponse<IEnumerable<Address>>()
             {
                 Data = addresses
             };
@@ -38,9 +38,9 @@ namespace MyList.Server.Services.Addresses
 
             if (result.Data != null)
             {
-                await db.Addresses.AddAsync(result.Data);
+                db.Addresses.Add(result.Data);
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return result;
             }
@@ -48,23 +48,27 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
-        public async Task<ServiceResponse<List<Address>>> DeleteAddress(int id)
+        public async Task<ServiceResponse<IEnumerable<Address>>> DeleteAddress(int id)
         {
-            var result = await db.Addresses.FirstOrDefaultAsync(a => a.Id == id);
+            var result = await db.Addresses.FindAsync(id);
 
             if (result != null)
             {
                 db.Addresses.Remove(result);
 
                 db.SaveChanges();
+
+                var response = new ServiceResponse<IEnumerable<Address>>
+                {
+                    Data = await db.Addresses.ToListAsync()
+                };
+
+                return response;
             }
-
-            var response = new ServiceResponse<List<Address>>
+            else
             {
-                Data = await db.Addresses.AsNoTracking().ToListAsync()
-            };
-
-            return response;
+                return null;
+            }     
         }
     }
 }

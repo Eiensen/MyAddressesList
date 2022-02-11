@@ -2,13 +2,12 @@
 
 @inject NavigationManager NavigationManager
 @inject IAddressService AddressService
-@implements IDisposable
 
 <h3>Мои адреса</h3>
 
 @if (AddressService.Addresses == null || AddressService.Addresses.Count == 0)
 {
-    <span>Loading ...</span>
+    <span>Загрузка данных...</span>
 }
 else
 {
@@ -34,40 +33,41 @@ else
                     <td>@addres.Sum</td>
                     <td>@addres.WorkersName</td>
                     <td>
-                        <button type="button" class="btn btn-primary" @onclick="(()=>DeleteAddress(addres.Id))">Delete</button>
+                        <button type="button" class="btn btn-link" style="font-size:small" @onclick="@(()=>DeleteAddress(addres.Id))">Delete</button>
                     </td>
                 </tr>
             }
+
+
+
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddress"><b>+</b></button>
 }
+<br />
+<button type="button" class="btn btn-primary form-control" @onclick="AddNewAddress"><b>+</b></button>
+
 
 
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await AddressService.GetAddresses();
-
-        StateHasChanged();
+        await LoadAddresses();
     }
 
-    private void DeleteAddress(int id)
+    private async Task DeleteAddress(int id)
     {
-        AddressService.DeleteAddress(id);
+        await AddressService.DeleteAddress(id);
 
-        StateHasChanged();
+        await LoadAddresses();
     }
 
     private void AddNewAddress()
     {
-        NavigationManager.NavigateTo("/editaddress");
-
-        StateHasChanged();
+        NavigationManager.NavigateTo("/addaddress");
     }
 
-    public void Dispose()
+    private async Task LoadAddresses()
     {
-        
+        await AddressService.GetAddresses();
     }
 }
