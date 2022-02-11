@@ -56,7 +56,7 @@ namespace MyList.Server.Controllers.Addresses
             if (response != null)
                 return Ok(response);
             else
-                return BadRequest("Id is not exist");
+               return BadRequest("It is not exist");
         }
     }
 }

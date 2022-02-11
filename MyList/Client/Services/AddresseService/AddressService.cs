@@ -44,9 +44,9 @@ namespace MyList.Client.Services.AddresseService
         {
             var request = await http.DeleteAsync($"api/address/{id}");
 
-            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<List<Address>>>();
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<Address>>();
 
-            Addresses = result.Data;
+            Addresses.Remove(result.Data);
         }
     }
 }

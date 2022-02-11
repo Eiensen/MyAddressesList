@@ -48,27 +48,27 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> DeleteAddress(int id)
+        public async Task<ServiceResponse<Address>> DeleteAddress(int id)
         {
             var result = await db.Addresses.FindAsync(id);
 
             if (result != null)
             {
+                var response = new ServiceResponse<Address>
+                {
+                    Data = result
+                };
+
                 db.Addresses.Remove(result);
 
                 db.SaveChanges();
-
-                var response = new ServiceResponse<IEnumerable<Address>>
-                {
-                    Data = await db.Addresses.ToListAsync()
-                };
 
                 return response;
             }
             else
             {
                 return null;
-            }     
+            }
         }
     }
 }
