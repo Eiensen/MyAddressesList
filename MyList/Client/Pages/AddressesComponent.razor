@@ -3,14 +3,20 @@
 @inject NavigationManager NavigationManager
 @inject IAddressService AddressService
 
-<h3>Мои адреса</h3>
+
+<h3>Мои Замеры @DateTime.Now.ToString("M")</h3>
 
 @if (AddressService.Addresses == null || AddressService.Addresses.Count == 0)
 {
-    <span>Загрузка данных...</span>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 }
 else
 {
+    <hr />
+    <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddressToList"><b>+</b></button>
+
+    <AddNewAddress IsOpened="toggelOpen" OnOpenedChange="UpdateToggle"></AddNewAddress>
+
     <table class="table" style="font-size:small">
         <thead>
             <tr>
@@ -33,22 +39,22 @@ else
                     <td>@addres.Sum</td>
                     <td>@addres.WorkersName</td>
                     <td>
-                        <button type="button" class="btn btn-link" style="font-size:small" @onclick="@(()=>DeleteAddress(addres.Id))">Delete</button>
+                        <button type="button" class="btn btn-link" style="font-size:small" @onclick="@(() => DeleteAddress(addres.Id))">Delete</button>
                     </td>
                 </tr>
             }
-
-
-
         </tbody>
     </table>
+    <hr />
+
 }
-<br />
-<button type="button" class="btn btn-primary form-control" @onclick="AddNewAddress"><b>+</b></button>
 
 
 
 @code {
+    //private AddNewAddress newAddressField;
+    private bool toggelOpen = false;
+
     protected override async Task OnInitializedAsync()
     {
         await LoadAddresses();
@@ -61,13 +67,20 @@ else
         await LoadAddresses();
     }
 
-    private void AddNewAddress()
+    private void AddNewAddressToList()
     {
-        NavigationManager.NavigateTo("/addaddress");
+        toggelOpen = !toggelOpen;
+
+        StateHasChanged();
     }
 
     private async Task LoadAddresses()
     {
         await AddressService.GetAddresses();
+    }
+
+    private void UpdateToggle(bool toggleFromChild)
+    {
+        toggelOpen = toggleFromChild;
     }
 }

@@ -40,12 +40,10 @@ namespace MyList.Server.Controllers.Addresses
         {
             var result = await addressService.AddNewAddress(address);
 
-            if (result == null)
-            {
-                return BadRequest("Something go wrong.");
-            }
+            if (result != null)
+                return Ok(result);
 
-            return Ok(result);
+            return BadRequest("Something go wrong.");
         }
 
         [HttpDelete("{id}")]
@@ -55,8 +53,8 @@ namespace MyList.Server.Controllers.Addresses
 
             if (response != null)
                 return Ok(response);
-            else
-               return BadRequest("It is not exist");
+
+            return BadRequest("It is not exist");
         }
     }
 }
