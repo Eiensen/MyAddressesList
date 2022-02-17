@@ -15,5 +15,9 @@ namespace MyList.Client.Services.AddresseService
         Task DeleteAddress(int id);
 
         Task<List<Address>> GetAddresses();
+
+        Task<Address> GetAddressById(int id);
+
+        Task UpdateAddress(Address address);
     }
 }

@@ -31,6 +31,22 @@ namespace MyList.Client.Services.AddresseService
             return null;
         }
 
+        public async Task<Address> GetAddressById(int id)
+        {
+            var result = await http.GetFromJsonAsync<ServiceResponse<Address>>($"api/address/{id}");
+
+            if (result != null && result.Data != null)
+            {
+                var response = Addresses.FirstOrDefault(a => a.Id == result.Data.Id);
+
+                if (response == null) return null;
+
+                return response;
+            }
+
+            return null;
+        }
+
         public async Task AddNewAddress(Address address)
         {
             var request = await http.PostAsJsonAsync("api/address", address);
@@ -47,6 +63,15 @@ namespace MyList.Client.Services.AddresseService
             var result = await request.Content.ReadFromJsonAsync<ServiceResponse<Address>>();
 
             Addresses.Remove(result.Data);
+        }
+
+        public async Task UpdateAddress(Address address)
+        {
+            var request = await http.PutAsJsonAsync($"api/address/{address.Id}", address);
+
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<List<Address>>>();
+
+            Addresses = result.Data;
         }
     }
 }

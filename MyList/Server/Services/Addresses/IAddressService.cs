@@ -11,5 +11,9 @@ namespace MyList.Server.Services.Addresses
         Task<ServiceResponse<Address>> DeleteAddress(int id);
 
         ServiceResponse<IEnumerable<Address>> GetAddressesAsync();
+
+        Task<ServiceResponse<Address>> GetAddressById(int id);
+
+        Task<ServiceResponse<IEnumerable<Address>>> UpdateAddress(int id, Address address);
     }
 }

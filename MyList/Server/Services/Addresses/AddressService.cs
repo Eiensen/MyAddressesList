@@ -48,6 +48,23 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
+        public async Task<ServiceResponse<Address>> GetAddressById(int id)
+        {
+            var request = await db.Addresses.FindAsync(id);
+
+            var result = new ServiceResponse<Address>
+            {
+                Data = request
+            };
+
+            if (result.Data != null)
+            {   
+                return result;
+            }
+
+            return null;
+        }
+
         public async Task<ServiceResponse<Address>> DeleteAddress(int id)
         {
             var result = await db.Addresses.FindAsync(id);
@@ -64,6 +81,28 @@ namespace MyList.Server.Services.Addresses
                 db.SaveChanges();
 
                 return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<Address>>> UpdateAddress(int id, Address address)
+        {
+            var result = await db.Addresses.FirstOrDefaultAsync(a => a.Id == id);
+
+            if (result != null)
+            {  
+                result.Name = address.Name;
+                result.WorkersName = address.WorkersName;
+                result.DateMeasurment = address.DateMeasurment;
+                result.DateMontage = address.DateMontage;
+                result.Sum = address.Sum;
+
+                await db.SaveChangesAsync();                            
+
+                return GetAddressesAsync();
             }
             else
             {
