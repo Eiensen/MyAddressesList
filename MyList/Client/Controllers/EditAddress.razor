@@ -62,8 +62,7 @@
     private Address AddressToUpdate;
 
     private Worker workers;
-    //private DateTime startDate;
-    //private DateTime montageDate;
+
     private bool isOpened = false;
 
     [Parameter]
@@ -113,8 +112,6 @@
     {
         await AddressService.UpdateAddress(AddressToUpdate);
 
-        //InitialDataForm();
-
         IsOpened = false;
 
         await OnOpenedChange.InvokeAsync(IsOpened);
@@ -132,9 +129,5 @@
         AddressToUpdate = new Address();
 
         workers = new Worker();
-
-        //startDate = DateTime.Now;
-
-        //montageDate = DateTime.Now;
     }
 }

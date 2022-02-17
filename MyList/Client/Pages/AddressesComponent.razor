@@ -15,7 +15,7 @@ else
     <hr />
     <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddressToList"><b>+</b></button>
 
-    <AddNewAddress IsOpened="toggelOpen" OnOpenedChange="UpdateToggle"></AddNewAddress>
+
 
     <table class="table" style="font-size:small">
         <thead>
@@ -51,7 +51,10 @@ else
     {
         <EditAddress AddressId="addressIdToEdit" IsOpened="isEditModalWindowOpened" OnOpenedChange="UpdateEditModalBoolen"></EditAddress>
     }
-
+    @if (toggelOpen)
+    {
+        <AddNewAddress IsOpened="toggelOpen" OnOpenedChange="UpdateToggle"></AddNewAddress>
+    }
 }
 
 
