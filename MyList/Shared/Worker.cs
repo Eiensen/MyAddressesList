@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 namespace MyList.Shared
 {
-    public enum Worker
+    public class Worker
     {
-        Александр,
-        Славик,
-        Бодров,
-        Алексей,
-        Муралов,
-        Рома,
-        Дима,
-        Броня
+        public string[] Workers { get; set; } = new[]
+        {
+            "Александр",
+        "Славик",
+        "Бодров",
+        "Алексей",
+        "Муралов",
+        "Рома",
+        "Дима",
+        "Броня"
+        };
+
     }
 }

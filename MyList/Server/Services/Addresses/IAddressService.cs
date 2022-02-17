@@ -6,6 +6,14 @@ namespace MyList.Server.Services.Addresses
 {
     public interface IAddressService
     {
-        Task<ServiceResponse<List<Address>>> GetAddressesAsync();
+        Task<ServiceResponse<Address>> AddNewAddress(Address address);
+
+        Task<ServiceResponse<Address>> DeleteAddress(int id);
+
+        ServiceResponse<IEnumerable<Address>> GetAddressesAsync();
+
+        Task<ServiceResponse<Address>> GetAddressById(int id);
+
+        Task<ServiceResponse<IEnumerable<Address>>> UpdateAddress(int id, Address address);
     }
 }

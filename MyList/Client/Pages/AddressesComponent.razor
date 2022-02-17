@@ -1,46 +1,104 @@
-﻿@page "/address"
+﻿@page "/addresses"
 
+@inject NavigationManager NavigationManager
 @inject IAddressService AddressService
 
-<h3>Мои адреса</h3>
+
+<h3>Мои Замеры @DateTime.Now.ToString("M")</h3>
 
 @if (AddressService.Addresses == null || AddressService.Addresses.Count == 0)
 {
-    <span>Loading ...</span>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 }
 else
 {
-    <table class="table">
+    <hr />
+    <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddressToList"><b>+</b></button>
+    <table class="table" style="font-size:small">
         <thead>
             <tr>
-                <th>Дата Замера</th>
-                <th>Дата Монтажа</th>
+                <th>Замер</th>
+                <th>Монтаж</th>
                 <th>Адрес</th>
-                <th>Сумма Заказа</th>
+                <th>Сумма</th>
                 <th>Бригада</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-
             @foreach (var addres in AddressService.Addresses)
             {
                 <tr>
-                    <td>@addres.DateMeasurment</td>
-                    <td>@addres.DateMontage</td>
-                    <td>@addres.Name</td>
+                    <td>@addres.DateMeasurment.ToString("dd/MM")</td>
+                    <td>@addres.DateMontage.ToString("dd/MM")</td>
+                    <td><b>@addres.Name</b></td>
                     <td>@addres.Sum</td>
                     <td>@addres.WorkersName</td>
-
+                    <td>
+                        <button type="button" class="btn btn-link" style="font-size:small" @onclick="@(() => EditAddress(addres.Id))">Edit</button>
+                        <button type="button" class="btn btn-link" style="font-size:small" @onclick="@(() => DeleteAddress(addres.Id))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
+    <hr />
+    @if (isEditModalWindowOpened)
+    {
+        <EditAddress AddressId="addressIdToEdit" IsOpened="isEditModalWindowOpened" OnOpenedChange="UpdateEditModalBoolen"></EditAddress>
+    }
+    @if (toggelOpen)
+    {
+        <AddNewAddress IsOpened="toggelOpen" OnOpenedChange="UpdateToggle"></AddNewAddress>
+    }
 }
 
 
+
 @code {
+    private bool toggelOpen = false;
+
+    private int addressIdToEdit;
+
+    private bool isEditModalWindowOpened = false;
+
     protected override async Task OnInitializedAsync()
     {
+        await LoadAddresses();
+    }
+
+    private async Task DeleteAddress(int id)
+    {
+        await AddressService.DeleteAddress(id);
+
+        await LoadAddresses();
+    }
+
+    private void EditAddress(int id)
+    {
+        isEditModalWindowOpened = true;
+        addressIdToEdit = id;
+    }
+
+    private void UpdateEditModalBoolen(bool isModalClosed)
+    {
+        isEditModalWindowOpened = isModalClosed;
+    }
+
+    private void AddNewAddressToList()
+    {
+        toggelOpen = !toggelOpen;
+
+        StateHasChanged();
+    }
+
+    private async Task LoadAddresses()
+    {
         await AddressService.GetAddresses();
+    }
+
+    private void UpdateToggle(bool toggleFromChild)
+    {
+        toggelOpen = toggleFromChild;
     }
 }

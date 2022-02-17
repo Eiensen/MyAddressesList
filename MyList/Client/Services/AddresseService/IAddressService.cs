@@ -10,6 +10,14 @@ namespace MyList.Client.Services.AddresseService
     {
         List<Address> Addresses { get; set; }
 
-        Task GetAddresses();
+        Task AddNewAddress(Address address);
+
+        Task DeleteAddress(int id);
+
+        Task<List<Address>> GetAddresses();
+
+        Task<Address> GetAddressById(int id);
+
+        Task UpdateAddress(Address address);
     }
 }

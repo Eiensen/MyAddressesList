@@ -19,12 +19,59 @@ namespace MyList.Client.Services.AddresseService
 
         public List<Address> Addresses { get; set; } = new List<Address>();
 
-        public async Task GetAddresses()
+        public async Task<List<Address>> GetAddresses()
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>("api/address");
 
-            if (result != null && result.Data != null) 
+            if (result != null && result.Data != null)
+            {
                 Addresses = result.Data;
+            }
+
+            return null;
+        }
+
+        public async Task<Address> GetAddressById(int id)
+        {
+            var result = await http.GetFromJsonAsync<ServiceResponse<Address>>($"api/address/{id}");
+
+            if (result != null && result.Data != null)
+            {
+                var response = Addresses.FirstOrDefault(a => a.Id == result.Data.Id);
+
+                if (response == null) return null;
+
+                return response;
+            }
+
+            return null;
+        }
+
+        public async Task AddNewAddress(Address address)
+        {
+            var request = await http.PostAsJsonAsync("api/address", address);
+
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<Address>>();
+
+            Addresses.Add(result.Data);
+        }
+
+        public async Task DeleteAddress(int id)
+        {
+            var request = await http.DeleteAsync($"api/address/{id}");
+
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<Address>>();
+
+            Addresses.Remove(result.Data);
+        }
+
+        public async Task UpdateAddress(Address address)
+        {
+            var request = await http.PutAsJsonAsync($"api/address/{address.Id}", address);
+
+            var result = await request.Content.ReadFromJsonAsync<ServiceResponse<List<Address>>>();
+
+            Addresses = result.Data;
         }
     }
 }

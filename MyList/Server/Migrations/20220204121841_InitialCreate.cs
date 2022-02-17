@@ -17,7 +17,7 @@ namespace MyList.Server.Migrations
                     DateMontage = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Sum = table.Column<int>(type: "int", nullable: false),
-                    WorkersName = table.Column<int>(type: "int", nullable: false)
+                    WorkersName = table.Column<string>(type: "nvarchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
