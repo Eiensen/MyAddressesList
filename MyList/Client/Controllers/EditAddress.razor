@@ -12,7 +12,6 @@
                         <h5 class="modal-title">Редактирование Замера</h5>
                     </div>
                     <div class="modal-body">
-
                         <div class="form-group">
                             <label for="name">Адрес</label>
                             <InputText id="name" @bind-Value="AddressToUpdate.Name" class="form-control"></InputText>
@@ -41,12 +40,10 @@
                             <label for="sum">Сумма Заказа</label>
                             <InputNumber id="sum" @bind-Value="AddressToUpdate.Sum" class="form-control"></InputNumber>
                         </div>
-
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save</button>
                             <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
                         </div>
-
                     </div>
                 </EditForm>
             </div>
@@ -94,6 +91,7 @@
         base.OnParametersSet();
 
         var address = await AddressService.GetAddressById(AddressId);
+
         if (address != null)
         {
             AddressToUpdate = new Address

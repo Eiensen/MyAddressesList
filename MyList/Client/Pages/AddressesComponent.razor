@@ -14,9 +14,6 @@ else
 {
     <hr />
     <button type="button" class="btn btn-primary form-control" @onclick="AddNewAddressToList"><b>+</b></button>
-
-
-
     <table class="table" style="font-size:small">
         <thead>
             <tr>
@@ -29,7 +26,6 @@ else
             </tr>
         </thead>
         <tbody>
-
             @foreach (var addres in AddressService.Addresses)
             {
                 <tr>
