@@ -1,22 +1,22 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">MyList</a>
+    <a class="navbar-brand" href="">Мой Органайзер</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="reports">
-                <span class="oi oi-calendar" aria-hidden="true"></span> Таблица Замеров
-            </NavLink>
-        </li>
+    <ul class="nav flex-column">        
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="addresses">
-                <span class="oi oi-plus" aria-hidden="true"></span> Замеры Сегодня
+                <span class="oi oi-plus" aria-hidden="true"></span> Добавить Адрес
             </NavLink>
-        </li>        
+        </li>  
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="reports">
+                <span class="oi oi-calendar" aria-hidden="true"></span> Сформировать Отчет
+            </NavLink>
+        </li>
     </ul>
 </div>
 
