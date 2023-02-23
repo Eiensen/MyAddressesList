@@ -19,5 +19,7 @@ namespace MyList.Client.Services.AddresseService
         Task<Address> GetAddressById(int id);
 
         Task UpdateAddress(Address address);
+
+        Task<IEnumerable<Address>> SearchForMeasurment(DateTime startDate, DateTime endDate);
     }
 }

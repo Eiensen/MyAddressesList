@@ -73,5 +73,18 @@ namespace MyList.Client.Services.AddresseService
 
             Addresses = result.Data;
         }
+
+        public async Task<IEnumerable<Address>> SearchForMeasurment(DateTime startDate, DateTime endDate)
+        {
+            var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
+                ($"api/address/SearchForMeasurment/{startDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}");
+
+            if (result != null && result.Data != null)
+            {
+                return result.Data;
+            }
+
+            return null;
+        }
     }
 }
