@@ -27,14 +27,14 @@
 <div id="printarea">
     @if (addresses != null)
     {
-        <table class="table" style="font-size:small">
+        <table class="table" style="font-size:small; width:100%">
             <thead>
                 <tr>
-                    <th>Замер</th>
-                    <th>Монтаж</th>
-                    <th>Адрес</th>
-                    <th>Сумма</th>
-                    <th>Бригада</th>
+                    <th class="col-1">Замер</th>
+                    <th class="col-1">Монтаж</th>
+                    <th class="col-5">Адрес</th>
+                    <th class="col-3">Бригада</th>
+                    <th class="col-2">Сумма замера</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,19 +43,19 @@
                     <tr>
                         <td>@addres.DateMeasurment.ToString("dd/MM")</td>
                         <td>@addres.DateMontage.ToString("dd/MM")</td>
-                        <td><b>@addres.Name</b></td>
-                        <td>@addres.Sum</td>
+                        <td><b>@addres.Name</b></td>                       
                         <td>@addres.WorkersName</td>
+                        <td>@addres.Sum</td>
                     </tr>
                 }
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5">&nbsp;</td>
+                    <td colspan="3">&nbsp;</td>
                     <td style="text-align:right">
-                        <b>Общая сумма:</b>
+                        <b>&sum;</b>
                     </td>
-                    <td style="text-align:right">
+                    <td style="text-align:left">
                         <b>
                             @(string.Format("{0:c}", addresses.Sum(x => x.Sum)))
                         </b>
