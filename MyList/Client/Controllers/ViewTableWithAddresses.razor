@@ -1,7 +1,7 @@
 ﻿<div id="printarea">
     @if (addresses != null)
     {
-        <table class="table" style="font-size:small; width:100%">
+        <table class="table example col1-readonly" style="font-size:small; width:100%">
             <thead>
                 <tr>
                     <th class="col-1">Замер</th>
@@ -15,8 +15,8 @@
                 @foreach (var addres in addresses)
                 {
                     <tr>
-                        <td>@addres.DateMeasurment.ToString("dd/MM")</td>
-                        <td>@addres.DateMontage.ToString("dd/MM")</td>
+                        <td style="background-color: @StylingColumnMeasure()">@addres.DateMeasurment.ToString("dd/MM")</td>
+                        <td style="background-color: @StylingColumnMontage()">@addres.DateMontage.ToString("dd/MM")</td>
                         <td><b>@addres.Name</b></td>
                         <td>@addres.WorkersName</td>
                         <td>@addres.Sum</td>
@@ -43,4 +43,25 @@
 @code {
     [Parameter]
     public IEnumerable<Address> addresses { get; set; }
+
+    [Parameter]
+    public string PageLink { get; set; }
+
+    private const string measurementLink = "/reports-mesure";
+
+    private const string montageLink = "/reports-montage";
+
+    private string StylingColumnMeasure()
+    {
+        if (PageLink == measurementLink)
+            return "lightgreen; font-weight:bold";
+        else return "";
+    }
+
+    private string StylingColumnMontage()
+    {
+        if (PageLink == montageLink)
+            return "lightgreen; font-weight:bold";
+        else return "";
+    }
 }

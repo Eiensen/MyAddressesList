@@ -28,6 +28,9 @@
     private IEnumerable<Address> addresses;
 
     [Parameter]
+    public string PageLink { get; set; }
+
+    [Parameter]
     public EventCallback<IEnumerable<Address>> OnAddressesLoad { get; set; }
 
     protected override void OnInitialized()
@@ -41,7 +44,10 @@
 
     private async Task LoadAddresses()
     {
-        addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
+        if (PageLink == "/reports-mesure")
+            addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
+        else if (PageLink == "/reports-montage")
+            addresses = await AddressService.SearchForAddressesByMontage(startDate, endDate);
 
         await OnAddressesLoad.InvokeAsync(addresses);
     }

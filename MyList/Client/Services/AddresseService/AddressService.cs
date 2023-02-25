@@ -88,5 +88,20 @@ namespace MyList.Client.Services.AddresseService
 
             return null;
         }
+
+        public async Task<IEnumerable<Address>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate)
+        {
+            var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
+                ("api/address/SearchForAddressesByMontage/" +
+                $"{startDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}" +
+                $"/{endDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}");
+
+            if (result != null && result.Data != null)
+            {
+                return result.Data;
+            }
+
+            return null;
+        }
     }
 }

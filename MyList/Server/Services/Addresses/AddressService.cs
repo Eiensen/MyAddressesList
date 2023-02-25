@@ -125,5 +125,21 @@ namespace MyList.Server.Services.Addresses
 
             return response;
         }
+
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate)
+        {
+            var result = await db.Addresses.Where(x =>
+                    x.DateMontage >= startDate.Date &&
+                    x.DateMontage <= endDate.Date.AddDays(1).Date).ToListAsync();
+
+            if (result == null) return null;
+
+            var response = new ServiceResponse<IEnumerable<Address>>
+            {
+                Data = result
+            };
+
+            return response;
+        }
     }
 }
