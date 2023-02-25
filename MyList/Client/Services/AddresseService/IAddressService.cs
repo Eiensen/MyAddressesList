@@ -20,6 +20,6 @@ namespace MyList.Client.Services.AddresseService
 
         Task UpdateAddress(Address address);
 
-        Task<IEnumerable<Address>> SearchForMeasurment(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Address>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate);
     }
 }

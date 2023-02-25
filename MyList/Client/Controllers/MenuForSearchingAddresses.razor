@@ -1,0 +1,53 @@
+﻿@inject IJSRuntime JSRuntime
+@inject IAddressService AddressService
+
+<div class="row">
+    <div class="col-3">
+        <label for="startdate">С: </label>
+        <input id="startdate" type="date" class="form-control" @bind-value="startDate" />
+    </div>
+    <div class="col-3">
+        <label for="enddate">По: </label>
+        <input id="enddate" type="date" class="form-control" @bind-value="endDate" />
+    </div>
+    <div class="col-2">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary form-control" @onclick="LoadAddresses">Поиск</button>
+    </div>
+    <div class="col-2">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Печать</button>
+    </div>
+</div>
+
+@code {
+    private DateTime startDate;
+
+    private DateTime endDate;
+
+    private IEnumerable<Address> addresses;
+
+    [Parameter]
+    public EventCallback<IEnumerable<Address>> OnAddressesLoad { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        startDate = DateTime.Today;
+
+        endDate = DateTime.Today;
+    }
+
+    private async Task LoadAddresses()
+    {
+        addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
+
+        await OnAddressesLoad.InvokeAsync(addresses);
+    }
+
+    private void PrintReport()
+    {
+        JSRuntime.InvokeVoidAsync("print");
+    }
+}
