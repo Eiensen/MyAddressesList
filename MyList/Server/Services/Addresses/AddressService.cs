@@ -110,9 +110,11 @@ namespace MyList.Server.Services.Addresses
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForMeasurment(DateTime startDate, DateTime endDate)
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate)
         {
-            var result = await db.Addresses.Where(x => x.DateMeasurment >= startDate.Date && x.DateMeasurment <= endDate.Date.AddDays(1).Date).ToListAsync();
+            var result = await db.Addresses.Where(x => 
+                    x.DateMeasurment >= startDate.Date && 
+                    x.DateMeasurment <= endDate.Date.AddDays(1).Date).ToListAsync();
 
             if (result == null) return null;
 
@@ -122,15 +124,6 @@ namespace MyList.Server.Services.Addresses
             };
 
             return response;
-
-            //if (string.IsNullOrWhiteSpace(cashierName))
-            //    return db.Transactions.Where(x => x.TimeStemp >= startDate.Date && x.TimeStemp <= endDate.Date.AddDays(1).Date);
-            //else
-            //{
-            //    return db.Transactions.Where(x =>
-            //    EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
-            //    x.TimeStemp >= startDate.Date && x.TimeStemp <= endDate.Date.AddDays(1).Date);
-            //}
         }
     }
 }

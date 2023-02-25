@@ -1,0 +1,46 @@
+﻿<div id="printarea">
+    @if (addresses != null)
+    {
+        <table class="table" style="font-size:small; width:100%">
+            <thead>
+                <tr>
+                    <th class="col-1">Замер</th>
+                    <th class="col-1">Монтаж</th>
+                    <th class="col-5">Адрес</th>
+                    <th class="col-3">Бригада</th>
+                    <th class="col-2">Сумма замера</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var addres in addresses)
+                {
+                    <tr>
+                        <td>@addres.DateMeasurment.ToString("dd/MM")</td>
+                        <td>@addres.DateMontage.ToString("dd/MM")</td>
+                        <td><b>@addres.Name</b></td>
+                        <td>@addres.WorkersName</td>
+                        <td>@addres.Sum</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                    <td style="text-align:right">
+                        <b>&sum;</b>
+                    </td>
+                    <td style="text-align:left">
+                        <b>
+                            @(string.Format("{0:c}", addresses.Sum(x => x.Sum)))
+                        </b>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<Address> addresses { get; set; }
+}

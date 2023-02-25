@@ -17,6 +17,6 @@ namespace MyList.Server.Services.Addresses
 
         Task<ServiceResponse<IEnumerable<Address>>> UpdateAddress(int id, Address address);
 
-        Task<ServiceResponse<IEnumerable<Address>>> SearchForMeasurment(DateTime startDate, DateTime endDate);
+        Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate);
     }
 }

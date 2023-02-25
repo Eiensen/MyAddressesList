@@ -81,10 +81,10 @@ namespace MyList.Server.Controllers.Addresses
             return NotFound("It is not exist");
         }
 
-        [HttpGet("SearchForMeasurment/{startDate}/{endDate}")]
+        [HttpGet("SearchForAddressesByMeasurment/{startDate}/{endDate}")]
         public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForMeasurment(DateTime startDate, DateTime endDate)
         {
-            var response = await addressService.SearchForMeasurment(startDate, endDate);
+            var response = await addressService.SearchForAddressesByMeasurment(startDate, endDate);
 
             if (response != null)
                 return Ok(response);

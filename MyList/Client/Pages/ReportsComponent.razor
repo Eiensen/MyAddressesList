@@ -1,94 +1,17 @@
 ﻿@page "/reports-mesure"
 
-@inject IJSRuntime JSRuntime
-@inject IAddressService AddressService
 
-<h3>Формирование таблицы замеров</h3>
+<h3>Таблица адресов по дате замера</h3>
 
-<div class="row">
-    <div class="col-3">
-        <label for="startdate">С: </label>
-        <input id="startdate" type="date" class="form-control" @bind-value="startDate" />
-    </div>
-    <div class="col-3">
-        <label for="enddate">По: </label>
-        <input id="enddate" type="date" class="form-control" @bind-value="endDate" />
-    </div>
-    <div class="col-2">
-        <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="LoadAddresses">Поиск</button>
-    </div>
-    <div class="col-2">
-        <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Печать</button>
-    </div>
-</div>
+<MenuForSearchingAddresses OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
 <br />
-<div id="printarea">
-    @if (addresses != null)
-    {
-        <table class="table" style="font-size:small; width:100%">
-            <thead>
-                <tr>
-                    <th class="col-1">Замер</th>
-                    <th class="col-1">Монтаж</th>
-                    <th class="col-5">Адрес</th>
-                    <th class="col-3">Бригада</th>
-                    <th class="col-2">Сумма замера</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var addres in addresses)
-                {
-                    <tr>
-                        <td>@addres.DateMeasurment.ToString("dd/MM")</td>
-                        <td>@addres.DateMontage.ToString("dd/MM")</td>
-                        <td><b>@addres.Name</b></td>                       
-                        <td>@addres.WorkersName</td>
-                        <td>@addres.Sum</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3">&nbsp;</td>
-                    <td style="text-align:right">
-                        <b>&sum;</b>
-                    </td>
-                    <td style="text-align:left">
-                        <b>
-                            @(string.Format("{0:c}", addresses.Sum(x => x.Sum)))
-                        </b>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    }
-</div>
+<ViewTableWithAddresses addresses="addresses"></ViewTableWithAddresses>
 
-@code {  
-    private DateTime startDate;
-
-    private DateTime endDate;
-
+@code {
     private IEnumerable<Address> addresses;
 
-    protected override void OnInitialized()
+    private void LoadAddresses(IEnumerable<Address> addresses)
     {
-        base.OnInitialized();
-
-        startDate = DateTime.Today;
-
-        endDate = DateTime.Today;
-    }
-
-    private async Task LoadAddresses()
-    {
-        addresses = await AddressService.SearchForMeasurment(startDate, endDate);
-    }
-
-    private void PrintReport()
-    {
-        JSRuntime.InvokeVoidAsync("print");
+        this.addresses = addresses;
     }
 }
