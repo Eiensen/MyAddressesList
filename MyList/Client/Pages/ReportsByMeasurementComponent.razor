@@ -3,9 +3,9 @@
 
 <h3>Таблица адресов по дате замера</h3>
 
-<MenuForSearchingAddresses OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
+<MenuForSearchingAddresses PageLink="/reports-mesure" OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
 <br />
-<ViewTableWithAddresses addresses="addresses"></ViewTableWithAddresses>
+<ViewTableWithAddresses PageLink="/reports-mesure" addresses="addresses"></ViewTableWithAddresses>
 
 @code {
     private IEnumerable<Address> addresses;
