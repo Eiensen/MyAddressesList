@@ -103,5 +103,21 @@ namespace MyList.Client.Services.AddresseService
 
             return null;
         }
+
+        public async Task<IEnumerable<Address>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        {
+            var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
+                ("api/address/SearchForAddressesByWorkers/" +
+                $"{startDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}" +
+                $"/{endDate.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)}" +
+                $"/{worker}");
+
+            if (result != null && result.Data != null)
+            {
+                return result.Data;
+            }
+
+            return null;
+        }
     }
 }

@@ -23,5 +23,7 @@ namespace MyList.Client.Services.AddresseService
         Task<IEnumerable<Address>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate);
 
         Task<IEnumerable<Address>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate);
+
+        Task<IEnumerable<Address>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker);
     }
 }

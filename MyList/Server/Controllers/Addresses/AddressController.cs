@@ -102,5 +102,16 @@ namespace MyList.Server.Controllers.Addresses
 
             return NotFound("It Is not found.");
         }
+
+        [HttpGet("SearchForAddressesByWorkers/{startDate}/{endDate}/{worker}")]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        {
+            var response = await addressService.SearchForAddressesByWorkers(startDate, endDate, worker);
+
+            if (response != null)
+                return Ok(response);
+
+            return NotFound("It Is not found.");
+        }
     }
 }

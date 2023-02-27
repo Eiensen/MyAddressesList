@@ -12,24 +12,53 @@
     </div>
     <div class="col-2">
         <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="LoadAddresses">Поиск</button>
+        <button type="button" class="btn btn-primary form-control" @onclick="LoadAddressesAsync">Поиск</button>
     </div>
     <div class="col-2">
         <label>&nbsp;</label>
         <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Печать</button>
     </div>
 </div>
-<div class="row">
-    <input type="radio" checked=""
-</div>
+
+<div>
+    @foreach (var value in (SearchingStates[])Enum.GetValues(typeof(SearchingStates)))
+        {
+        <input type="radio" name="state" checked=@(searchingState == value) @onchange="()=>searchingState = SetClassForWorkers(value)" />
+            <span class="ml-2 mr-2">@value.GetDisplayName()</span>
+        }
+    </div>        
+        <select id="worker" @bind="workerName" class="@chooseWorkerClass">
+            <option selected>выберите бригаду монтажников</option>
+            @foreach (var worker in workers.Workers)
+            {
+                <option value="@worker">@worker</option>
+            }
+        </select>
+
+@*<EditForm Model="searchingState">
+    <InputRadioGroup @bind-Value="searchingState">
+        @foreach (Enum value in Enum.GetValues(typeof(SearchingStates)))
+        {
+            <InputRadio Value=@value @onactivate="()=>SetClassForWorkers()" />
+            <span class="ml-2 mr-2">@value.GetDisplayName()</span>
+        }
+    </InputRadioGroup>        
+        <select id="worker" @bind="workerName" class="@chooseWorkerClass">
+            <option selected>выберите бригаду монтажников</option>
+            @foreach (var worker in workers.Workers)
+            {
+                <option value="@worker">@worker</option>
+            }
+        </select>
+</EditForm>*@
+
 
 @code {
-    private enum SearchingState
-    {
-        Measurement,
-        Montage,
-        Workers
-    }
+    private string workerName;
+
+    private string chooseWorkerClass = "form-control hidden";
+
+    private Worker workers;
 
     private DateTime startDate;
 
@@ -37,29 +66,67 @@
 
     private IEnumerable<Address> addresses;
 
-    [Parameter]
-    public string PageLink { get; set; }
+
+    private SearchingStates searchingState = SearchingStates.Measurement;
 
     [Parameter]
     public EventCallback<IEnumerable<Address>> OnAddressesLoad { get; set; }
 
+    [Parameter]
+    public EventCallback<SearchingStates> OnSearchingStateChange { get; set; }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
+        workers = new Worker();
 
         startDate = DateTime.Today;
 
         endDate = DateTime.Today;
     }
 
-    private async Task LoadAddresses()
+    private async Task LoadAddressesAsync()
     {
-        if (PageLink == "/reports-mesure")
-            addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
-        else if (PageLink == "/reports-montage")
-            addresses = await AddressService.SearchForAddressesByMontage(startDate, endDate);
+        switch (searchingState)
+        {
+            case SearchingStates.Measurement:
+                addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
+                break;
+            case SearchingStates.Montage:
+                addresses = await AddressService.SearchForAddressesByMontage(startDate, endDate);
+                break;  
+            case SearchingStates.Workers:
+                {
+                    if (workerName == null)
+                        return;
+
+                    addresses = await AddressService.SearchForAddressesByWorkers(startDate, endDate, workerName);
+                    break;
+                }
+        }
 
         await OnAddressesLoad.InvokeAsync(addresses);
+        await OnSearchingStateChange.InvokeAsync((SearchingStates)searchingState);
+    }
+
+    private SearchingStates SetClassForWorkers(SearchingStates states)
+    {
+        switch (states)
+        {
+            case SearchingStates.Measurement:
+                chooseWorkerClass = "form-control hidden";
+                return states;
+                
+            case SearchingStates.Montage:
+                chooseWorkerClass = "form-control hidden";
+                return states;
+
+            case SearchingStates.Workers:
+                chooseWorkerClass = "form-control";                
+                return states;
+            default: return states;
+        }
     }
 
     private void PrintReport()

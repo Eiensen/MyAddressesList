@@ -1,17 +1,24 @@
-﻿@page "/reports-mesure"
+﻿@page "/reports"
 
 
 <h3>Таблица адресов по дате замера</h3>
 
-<MenuForSearchingAddresses PageLink="/reports-mesure" OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
+<MenuForSearchingAddresses OnSearchingStateChange="SearchingState" OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
 <br />
-<ViewTableWithAddresses PageLink="/reports-mesure" addresses="addresses"></ViewTableWithAddresses>
+<ViewTableWithAddresses SearchingState="searchingStates" Addresses="addresses"></ViewTableWithAddresses>
 
 @code {
     private IEnumerable<Address> addresses;
 
+    private SearchingStates searchingStates;
+
     private void LoadAddresses(IEnumerable<Address> addresses)
     {
         this.addresses = addresses;
+    }
+
+    private void SearchingState(SearchingStates states)
+    {
+        searchingStates = states;
     }
 }

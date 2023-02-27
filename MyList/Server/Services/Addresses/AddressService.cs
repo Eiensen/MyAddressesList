@@ -141,5 +141,22 @@ namespace MyList.Server.Services.Addresses
 
             return response;
         }
+
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        {
+            var result = await db.Addresses.Where(x =>
+                    x.DateMontage >= startDate.Date &&
+                    x.DateMontage <= endDate.Date.AddDays(1).Date &&
+                    x.WorkersName == worker).ToListAsync();
+
+            if (result == null) return null;
+
+            var response = new ServiceResponse<IEnumerable<Address>>
+            {
+                Data = result
+            };
+
+            return response;
+        }
     }
 }
