@@ -36,9 +36,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Address>>> GetAddressById(int id)
+        public async Task<ActionResult<ServiceResponse<Address>>> GetAddressByIdAsync(int id)
         {
-            var result = await addressService.GetAddressById(id);
+            var result = await addressService.GetAddressByIdAsync(id);
 
             if (result == null)
             {
@@ -49,9 +49,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> AddNewAddress(Address address)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> AddNewAddressAsync(Address address)
         {
-            var result = await addressService.AddNewAddress(address);
+            var result = await addressService.AddNewAddressAsync(address);
 
             if (result != null)
                 return Ok(result);
@@ -60,9 +60,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> DeleteAddress(int id)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> DeleteAddressAsync(int id)
         {
-            var response = await addressService.DeleteAddress(id);
+            var response = await addressService.DeleteAddressAsync(id);
 
             if (response != null)
                 return Ok(response);
@@ -71,9 +71,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> UpdateAddress(int id, Address address)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> UpdateAddressAsync(int id, Address address)
         {
-            var response = await addressService.UpdateAddress(id, address);
+            var response = await addressService.UpdateAddressAsync(id, address);
 
             if (response != null)
                 return Ok(response);
@@ -82,9 +82,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpGet("SearchForAddressesByMeasurment/{startDate}/{endDate}")]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByMeasurmentAsync(DateTime startDate, DateTime endDate)
         {
-            var response = await addressService.SearchForAddressesByMeasurment(startDate, endDate);
+            var response = await addressService.SearchForAddressesByMeasurmentAsync(startDate, endDate);
 
             if (response != null)
                 return Ok(response);
@@ -93,9 +93,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpGet("SearchForAddressesByMontage/{startDate}/{endDate}")]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByMontageAsync(DateTime startDate, DateTime endDate)
         {
-            var response = await addressService.SearchForAddressesByMontage(startDate, endDate);
+            var response = await addressService.SearchForAddressesByMontageAsync(startDate, endDate);
 
             if (response != null)
                 return Ok(response);
@@ -104,9 +104,9 @@ namespace MyList.Server.Controllers.Addresses
         }
 
         [HttpGet("SearchForAddressesByWorkers/{startDate}/{endDate}/{worker}")]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Address>>>> SearchForAddressesByWorkersAsync(DateTime startDate, DateTime endDate, string worker)
         {
-            var response = await addressService.SearchForAddressesByWorkers(startDate, endDate, worker);
+            var response = await addressService.SearchForAddressesByWorkersAsync(startDate, endDate, worker);
 
             if (response != null)
                 return Ok(response);

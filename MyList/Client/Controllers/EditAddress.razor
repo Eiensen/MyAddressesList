@@ -5,7 +5,7 @@
     <div class="modal fade show" id="editAddressModal" tabindex="-1" role="dialog" style="display:block">
         <div class="modal-dialog shadow-lg bg-white rounded" role="document">
             <div class="modal-content">
-                <EditForm Model="AddressToUpdate" OnValidSubmit="HandleSubmit">
+                <EditForm Model="addressToUpdate" OnValidSubmit="HandleSubmitsAsync">
                     <DataAnnotationsValidator></DataAnnotationsValidator>
                     <ValidationSummary></ValidationSummary>
                     <div class="modal-header">
@@ -14,21 +14,21 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Адрес</label>
-                            <InputText id="name" @bind-Value="AddressToUpdate.Name" class="form-control"></InputText>
+                            <InputText id="name" @bind-Value="addressToUpdate.Name" class="form-control"></InputText>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="startdate">Дата Замера: </label>
-                                <input id="startdate" type="date" class="form-control" @bind-value="AddressToUpdate.DateMeasurment" />
+                                <input id="startdate" type="date" class="form-control" @bind-value="addressToUpdate.DateMeasurment" />
                             </div>
                             <div class="col">
                                 <label for="montageDate">Дата Монтажа: </label>
-                                <input id="montageDate" type="date" class="form-control" @bind-value="AddressToUpdate.DateMontage" />
+                                <input id="montageDate" type="date" class="form-control" @bind-value="addressToUpdate.DateMontage" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="worker">Бригада</label>
-                            <select id="worker" @bind="AddressToUpdate.WorkersName" class="form-control">
+                            <select id="worker" @bind="addressToUpdate.WorkersName" class="form-control">
                                 <option selected>выберите бригаду монтажников</option>
                                 @foreach (var worker in workers.Workers)
                                 {
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label for="sum">Сумма Заказа</label>
-                            <InputNumber id="sum" @bind-Value="AddressToUpdate.Sum" class="form-control"></InputNumber>
+                            <InputNumber id="sum" @bind-Value="addressToUpdate.Sum" class="form-control"></InputNumber>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save</button>
@@ -56,7 +56,7 @@
     [Parameter]
     public int AddressId { get; set; }
 
-    private Address AddressToUpdate;
+    private Address addressToUpdate;
 
     private Worker workers;
 
@@ -90,11 +90,11 @@
     {
         base.OnParametersSet();
 
-        var address = await AddressService.GetAddressById(AddressId);
+        var address = await AddressService.GetAddressByIdAsync(AddressId);
 
         if (address != null)
         {
-            AddressToUpdate = new Address
+            addressToUpdate = new Address
             {
                 DateMeasurment = address.DateMeasurment,
                 DateMontage = address.DateMontage,
@@ -106,9 +106,9 @@
         }
     }
 
-    private async Task HandleSubmit()
+    private async Task HandleSubmitsAsync()
     {
-        await AddressService.UpdateAddress(AddressToUpdate);
+        await AddressService.UpdateAddressAsync(addressToUpdate);
 
         IsOpened = false;
 
@@ -124,7 +124,7 @@
 
     private void InitialDataForm()
     {
-        AddressToUpdate = new Address();
+        addressToUpdate = new Address();
 
         workers = new Worker();
     }

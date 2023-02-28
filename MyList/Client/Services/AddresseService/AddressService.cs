@@ -19,7 +19,7 @@ namespace MyList.Client.Services.AddresseService
 
         public List<Address> Addresses { get; set; } = new List<Address>();
 
-        public async Task<List<Address>> GetAddresses()
+        public async Task GetAddressesAsync()
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>("api/address");
 
@@ -27,11 +27,9 @@ namespace MyList.Client.Services.AddresseService
             {
                 Addresses = result.Data;
             }
-
-            return null;
         }
 
-        public async Task<Address> GetAddressById(int id)
+        public async Task<Address> GetAddressByIdAsync(int id)
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<Address>>($"api/address/{id}");
 
@@ -47,7 +45,7 @@ namespace MyList.Client.Services.AddresseService
             return null;
         }
 
-        public async Task AddNewAddress(Address address)
+        public async Task AddNewAddressAsync(Address address)
         {
             var request = await http.PostAsJsonAsync("api/address", address);
 
@@ -56,7 +54,7 @@ namespace MyList.Client.Services.AddresseService
             Addresses.Add(result.Data);
         }
 
-        public async Task DeleteAddress(int id)
+        public async Task DeleteAddressAsync(int id)
         {
             var request = await http.DeleteAsync($"api/address/{id}");
 
@@ -65,7 +63,7 @@ namespace MyList.Client.Services.AddresseService
             Addresses.Remove(result.Data);
         }
 
-        public async Task UpdateAddress(Address address)
+        public async Task UpdateAddressAsync(Address address)
         {
             var request = await http.PutAsJsonAsync($"api/address/{address.Id}", address);
 
@@ -74,7 +72,7 @@ namespace MyList.Client.Services.AddresseService
             Addresses = result.Data;
         }
 
-        public async Task<IEnumerable<Address>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate)
+        public async Task SearchForAddressesByMeasurmentAsync(DateTime startDate, DateTime endDate)
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
                 ("api/address/SearchForAddressesByMeasurment/" +
@@ -83,13 +81,11 @@ namespace MyList.Client.Services.AddresseService
 
             if (result != null && result.Data != null)
             {
-                return result.Data;
+                Addresses = result.Data;
             }
-
-            return null;
         }
 
-        public async Task<IEnumerable<Address>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate)
+        public async Task SearchForAddressesByMontageAsync(DateTime startDate, DateTime endDate)
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
                 ("api/address/SearchForAddressesByMontage/" +
@@ -98,13 +94,11 @@ namespace MyList.Client.Services.AddresseService
 
             if (result != null && result.Data != null)
             {
-                return result.Data;
+                Addresses = result.Data;
             }
-
-            return null;
         }
 
-        public async Task<IEnumerable<Address>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        public async Task SearchForAddressesByWorkersAsync(DateTime startDate, DateTime endDate, string worker)
         {
             var result = await http.GetFromJsonAsync<ServiceResponse<List<Address>>>
                 ("api/address/SearchForAddressesByWorkers/" +
@@ -114,10 +108,8 @@ namespace MyList.Client.Services.AddresseService
 
             if (result != null && result.Data != null)
             {
-                return result.Data;
+                Addresses = result.Data;
             }
-
-            return null;
         }
     }
 }

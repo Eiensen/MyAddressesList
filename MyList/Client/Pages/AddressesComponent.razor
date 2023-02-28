@@ -64,14 +64,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAddresses();
+        await LoadAddressesAsync();
     }
 
     private async Task DeleteAddress(int id)
     {
-        await AddressService.DeleteAddress(id);
+        await AddressService.DeleteAddressAsync(id);
 
-        await LoadAddresses();
+        await LoadAddressesAsync();
     }
 
     private void EditAddress(int id)
@@ -80,9 +80,16 @@ else
         addressIdToEdit = id;
     }
 
-    private void UpdateEditModalBoolen(bool isModalClosed)
+    private async void UpdateEditModalBoolen(bool isModalClosed)
     {
         isEditModalWindowOpened = isModalClosed;
+
+        if (!isEditModalWindowOpened)
+        {
+            await LoadAddressesAsync();
+        }
+
+        StateHasChanged();
     }
 
     private void AddNewAddressToList()
@@ -92,9 +99,9 @@ else
         StateHasChanged();
     }
 
-    private async Task LoadAddresses()
+    private async Task LoadAddressesAsync()
     {
-        await AddressService.GetAddresses();
+        await AddressService.SearchForAddressesByMeasurmentAsync(DateTime.Now, DateTime.Now);
     }
 
     private void UpdateToggle(bool toggleFromChild)

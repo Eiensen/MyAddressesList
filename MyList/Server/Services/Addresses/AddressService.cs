@@ -29,7 +29,7 @@ namespace MyList.Server.Services.Addresses
             return response;
         }
 
-        public async Task<ServiceResponse<Address>> AddNewAddress(Address address)
+        public async Task<ServiceResponse<Address>> AddNewAddressAsync(Address address)
         {
             var result = new ServiceResponse<Address>
             {
@@ -48,7 +48,7 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
-        public async Task<ServiceResponse<Address>> GetAddressById(int id)
+        public async Task<ServiceResponse<Address>> GetAddressByIdAsync(int id)
         {
             var request = await db.Addresses.FindAsync(id);
 
@@ -65,7 +65,7 @@ namespace MyList.Server.Services.Addresses
             return null;
         }
 
-        public async Task<ServiceResponse<Address>> DeleteAddress(int id)
+        public async Task<ServiceResponse<Address>> DeleteAddressAsync(int id)
         {
             var result = await db.Addresses.FindAsync(id);
 
@@ -88,7 +88,7 @@ namespace MyList.Server.Services.Addresses
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> UpdateAddress(int id, Address address)
+        public async Task<ServiceResponse<IEnumerable<Address>>> UpdateAddressAsync(int id, Address address)
         {
             var result = await db.Addresses.FirstOrDefaultAsync(a => a.Id == id);
 
@@ -110,7 +110,7 @@ namespace MyList.Server.Services.Addresses
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate)
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMeasurmentAsync(DateTime startDate, DateTime endDate)
         {
             var result = await db.Addresses.Where(x => 
                     x.DateMeasurment >= startDate.Date && 
@@ -126,7 +126,7 @@ namespace MyList.Server.Services.Addresses
             return response;
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate)
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByMontageAsync(DateTime startDate, DateTime endDate)
         {
             var result = await db.Addresses.Where(x =>
                     x.DateMontage >= startDate.Date &&
@@ -142,7 +142,7 @@ namespace MyList.Server.Services.Addresses
             return response;
         }
 
-        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByWorkers(DateTime startDate, DateTime endDate, string worker)
+        public async Task<ServiceResponse<IEnumerable<Address>>> SearchForAddressesByWorkersAsync(DateTime startDate, DateTime endDate, string worker)
         {
             var result = await db.Addresses.Where(x =>
                     x.DateMontage >= startDate.Date &&

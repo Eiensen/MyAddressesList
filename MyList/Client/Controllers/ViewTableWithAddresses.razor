@@ -1,6 +1,7 @@
-﻿@using MyList.Client.Extentions;
+﻿@inject IAddressService AddressService
+
 <div id="printarea">
-    @if (Addresses != null)
+    @if (AddressService.Addresses != null)
     {
         <table class="table example col1-readonly" style="font-size:small; width:100%">
             <thead>
@@ -13,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var addres in Addresses)
+                @foreach (var addres in AddressService.Addresses)
                 {
                     <tr>
                         <td style="background-color: @StylingColumnMeasure()">@addres.DateMeasurment.ToString("dd/MM")</td>
@@ -32,7 +33,7 @@
                     </td>
                     <td style="text-align:left">
                         <b>
-                            @(string.Format("{0:c}", Addresses.Sum(x => x.Sum)))
+                            @(string.Format("{0:c}", AddressService.Addresses.Sum(x => x.Sum)))
                         </b>
                     </td>
                 </tr>
@@ -42,9 +43,6 @@
 </div>
 
 @code {
-    [Parameter]
-    public IEnumerable<Address> Addresses { get; set; }
-
     [Parameter]
     public SearchingStates SearchingState { get; set; }   
 

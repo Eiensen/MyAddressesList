@@ -22,35 +22,18 @@
 
 <div>
     @foreach (var value in (SearchingStates[])Enum.GetValues(typeof(SearchingStates)))
-        {
+    {
         <input type="radio" name="state" checked=@(searchingState == value) @onchange="()=>searchingState = SetClassForWorkers(value)" />
-            <span class="ml-2 mr-2">@value.GetDisplayName()</span>
-        }
-    </div>        
-        <select id="worker" @bind="workerName" class="@chooseWorkerClass">
-            <option selected>выберите бригаду монтажников</option>
-            @foreach (var worker in workers.Workers)
-            {
-                <option value="@worker">@worker</option>
-            }
-        </select>
-
-@*<EditForm Model="searchingState">
-    <InputRadioGroup @bind-Value="searchingState">
-        @foreach (Enum value in Enum.GetValues(typeof(SearchingStates)))
-        {
-            <InputRadio Value=@value @onactivate="()=>SetClassForWorkers()" />
-            <span class="ml-2 mr-2">@value.GetDisplayName()</span>
-        }
-    </InputRadioGroup>        
-        <select id="worker" @bind="workerName" class="@chooseWorkerClass">
-            <option selected>выберите бригаду монтажников</option>
-            @foreach (var worker in workers.Workers)
-            {
-                <option value="@worker">@worker</option>
-            }
-        </select>
-</EditForm>*@
+        <span class="ml-2 mr-2">@value.GetDisplayName()</span>
+    }
+</div>
+<select id="worker" @bind="workerName" class="@chooseWorkerClass">
+    <option selected>выберите бригаду монтажников</option>
+    @foreach (var worker in workers.Workers)
+    {
+        <option value="@worker">@worker</option>
+    }
+</select>
 
 
 @code {
@@ -64,13 +47,7 @@
 
     private DateTime endDate;
 
-    private IEnumerable<Address> addresses;
-
-
-    private SearchingStates searchingState = SearchingStates.Measurement;
-
-    [Parameter]
-    public EventCallback<IEnumerable<Address>> OnAddressesLoad { get; set; }
+    private SearchingStates searchingState = SearchingStates.Measurement;    
 
     [Parameter]
     public EventCallback<SearchingStates> OnSearchingStateChange { get; set; }
@@ -91,23 +68,22 @@
         switch (searchingState)
         {
             case SearchingStates.Measurement:
-                addresses = await AddressService.SearchForAddressesByMeasurment(startDate, endDate);
+                await AddressService.SearchForAddressesByMeasurmentAsync(startDate, endDate);
                 break;
             case SearchingStates.Montage:
-                addresses = await AddressService.SearchForAddressesByMontage(startDate, endDate);
-                break;  
+                await AddressService.SearchForAddressesByMontageAsync(startDate, endDate);
+                break;
             case SearchingStates.Workers:
                 {
                     if (workerName == null)
                         return;
 
-                    addresses = await AddressService.SearchForAddressesByWorkers(startDate, endDate, workerName);
+                    await AddressService.SearchForAddressesByWorkersAsync(startDate, endDate, workerName);
                     break;
                 }
         }
 
-        await OnAddressesLoad.InvokeAsync(addresses);
-        await OnSearchingStateChange.InvokeAsync((SearchingStates)searchingState);
+        await OnSearchingStateChange.InvokeAsync(searchingState);
     }
 
     private SearchingStates SetClassForWorkers(SearchingStates states)
@@ -117,14 +93,15 @@
             case SearchingStates.Measurement:
                 chooseWorkerClass = "form-control hidden";
                 return states;
-                
+
             case SearchingStates.Montage:
                 chooseWorkerClass = "form-control hidden";
                 return states;
 
             case SearchingStates.Workers:
-                chooseWorkerClass = "form-control";                
+                chooseWorkerClass = "form-control";
                 return states;
+
             default: return states;
         }
     }
