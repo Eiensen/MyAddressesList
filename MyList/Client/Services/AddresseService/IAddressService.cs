@@ -10,18 +10,20 @@ namespace MyList.Client.Services.AddresseService
     {
         List<Address> Addresses { get; set; }
 
-        Task AddNewAddress(Address address);
+        Task AddNewAddressAsync(Address address);
 
-        Task DeleteAddress(int id);
+        Task DeleteAddressAsync(int id);
 
-        Task<List<Address>> GetAddresses();
+        Task GetAddressesAsync();
 
-        Task<Address> GetAddressById(int id);
+        Task<Address> GetAddressByIdAsync(int id);
 
-        Task UpdateAddress(Address address);
+        Task UpdateAddressAsync(Address address);
 
-        Task<IEnumerable<Address>> SearchForAddressesByMeasurment(DateTime startDate, DateTime endDate);
+        Task SearchForAddressesByMeasurmentAsync(DateTime startDate, DateTime endDate);
 
-        Task<IEnumerable<Address>> SearchForAddressesByMontage(DateTime startDate, DateTime endDate);
+        Task SearchForAddressesByMontageAsync(DateTime startDate, DateTime endDate);
+
+        Task SearchForAddressesByWorkersAsync(DateTime startDate, DateTime endDate, string worker);
     }
 }

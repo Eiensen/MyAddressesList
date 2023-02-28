@@ -6,7 +6,7 @@
     <div class="modal fade show" id="editAddressModal" tabindex="-1" role="dialog" style="display:block">
         <div class="modal-dialog shadow-lg bg-white rounded" role="document">
             <div class="modal-content">
-                <EditForm Model="NewAddress" OnValidSubmit="HandleSubmit">
+                <EditForm Model="newAddress" OnValidSubmit="HandleSubmitAsync">
                     <DataAnnotationsValidator></DataAnnotationsValidator>
                     <ValidationSummary></ValidationSummary>
                     <div class="modal-header">
@@ -15,7 +15,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Адрес</label>
-                            <InputText id="name" @bind-Value="NewAddress.Name" class="form-control"></InputText>
+                            <InputText id="name" @bind-Value="newAddress.Name" class="form-control"></InputText>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <label for="worker">Бригада</label>
-                            <select id="worker" @bind="NewAddress.WorkersName" class="form-control">
+                            <select id="worker" @bind="newAddress.WorkersName" class="form-control">
                                 <option selected>выберите бригаду монтажников</option>
                                 @foreach (var worker in workers.Workers)
                                 {
@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <label for="sum">Сумма Заказа</label>
-                            <InputNumber id="sum" @bind-Value="NewAddress.Sum" class="form-control"></InputNumber>
+                            <InputNumber id="sum" @bind-Value="newAddress.Sum" class="form-control"></InputNumber>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save</button>
@@ -54,7 +54,7 @@
 
 
 @code {
-    private Address NewAddress;
+    private Address newAddress;
 
     private Worker workers;
 
@@ -64,7 +64,8 @@
 
     private bool isOpened = false;
 
-    [Parameter] public EventCallback<bool> OnOpenedChange { get; set; }
+    [Parameter] 
+    public EventCallback<bool> OnOpenedChange { get; set; }
 
     [Parameter]
     public bool IsOpened
@@ -87,13 +88,13 @@
         InitialDataForm();
     }
 
-    private async Task HandleSubmit()
+    private async Task HandleSubmitAsync()
     {
-        NewAddress.DateMeasurment = startDate;
+        newAddress.DateMeasurment = startDate;
 
-        NewAddress.DateMontage = montageDate;
+        newAddress.DateMontage = montageDate;
 
-        await AddressService.AddNewAddress(NewAddress);
+        await AddressService.AddNewAddressAsync(newAddress);
 
         InitialDataForm();
 
@@ -111,7 +112,7 @@
 
     private void InitialDataForm()
     {
-        NewAddress = new Address();
+        newAddress = new Address();
 
         workers = new Worker();
 

@@ -1,17 +1,24 @@
-﻿@page "/reports-mesure"
+﻿@page "/reports"
 
+@inject IAddressService AddressService
 
-<h3>Таблица адресов по дате замера</h3>
+<h3>Формирование таблицы адресов</h3>
 
-<MenuForSearchingAddresses PageLink="/reports-mesure" OnAddressesLoad="LoadAddresses"></MenuForSearchingAddresses>
+<MenuForSearchingAddresses OnSearchingStateChange="SearchingState" />
 <br />
-<ViewTableWithAddresses PageLink="/reports-mesure" addresses="addresses"></ViewTableWithAddresses>
+<ViewTableWithAddresses SearchingState="searchingStates" />
 
 @code {
-    private IEnumerable<Address> addresses;
 
-    private void LoadAddresses(IEnumerable<Address> addresses)
+    private SearchingStates searchingStates;  
+
+    protected override void OnInitialized()
     {
-        this.addresses = addresses;
+        AddressService.Addresses = null;
+    }
+
+    private void SearchingState(SearchingStates states)
+    {
+        searchingStates = states;
     }
 }

@@ -1,5 +1,7 @@
-﻿<div id="printarea">
-    @if (addresses != null)
+﻿@inject IAddressService AddressService
+
+<div id="printarea">
+    @if (AddressService.Addresses != null)
     {
         <table class="table example col1-readonly" style="font-size:small; width:100%">
             <thead>
@@ -12,13 +14,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var addres in addresses)
+                @foreach (var addres in AddressService.Addresses)
                 {
                     <tr>
                         <td style="background-color: @StylingColumnMeasure()">@addres.DateMeasurment.ToString("dd/MM")</td>
                         <td style="background-color: @StylingColumnMontage()">@addres.DateMontage.ToString("dd/MM")</td>
                         <td><b>@addres.Name</b></td>
-                        <td>@addres.WorkersName</td>
+                        <td style="background-color: @StylingColumnWorkers()">@addres.WorkersName</td>
                         <td>@addres.Sum</td>
                     </tr>
                 }
@@ -31,7 +33,7 @@
                     </td>
                     <td style="text-align:left">
                         <b>
-                            @(string.Format("{0:c}", addresses.Sum(x => x.Sum)))
+                            @(string.Format("{0:c}", AddressService.Addresses.Sum(x => x.Sum)))
                         </b>
                     </td>
                 </tr>
@@ -42,25 +44,25 @@
 
 @code {
     [Parameter]
-    public IEnumerable<Address> addresses { get; set; }
-
-    [Parameter]
-    public string PageLink { get; set; }
-
-    private const string measurementLink = "/reports-mesure";
-
-    private const string montageLink = "/reports-montage";
+    public SearchingStates SearchingState { get; set; }   
 
     private string StylingColumnMeasure()
     {
-        if (PageLink == measurementLink)
+        if (SearchingState == SearchingStates.Measurement)
             return "lightgreen; font-weight:bold";
         else return "";
     }
 
     private string StylingColumnMontage()
     {
-        if (PageLink == montageLink)
+        if (SearchingState == SearchingStates.Montage)
+            return "lightgreen; font-weight:bold";
+        else return "";
+    }
+
+    private string StylingColumnWorkers()
+    {
+        if (SearchingState == SearchingStates.Workers)
             return "lightgreen; font-weight:bold";
         else return "";
     }
